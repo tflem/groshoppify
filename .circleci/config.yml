@@ -10,10 +10,7 @@ jobs:
         environment: # add POSTGRES environment variables.
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-          POSTGRES_DB: groshoppify_test
-
-    #application directory change it with your application directory name
-    working_directory: ~/groshoppify
+          POSTGRES_DB: groshoppify_test    
     
     steps:
       - checkout      
