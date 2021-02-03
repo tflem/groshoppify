@@ -15,7 +15,7 @@ jobs:
           RAILS_ENV: test
       - image: postgres:12.3
         environment:
-          POSTGRES_USER: groshoppify
+          POSTGRES_USER: postgres
           POSTGRES_DB: groshoppify_test
           POSTGRES_PASSWORD: ""    
     
