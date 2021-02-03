@@ -6,6 +6,7 @@ jobs:
 
     docker:
       - image: circleci/ruby:2.7.2-node-browsers
+      - image: circleci/postgres:13.6
 
     #application directory change it with your application directory name
     working_directory: ~/groshoppify
