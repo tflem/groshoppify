@@ -10,9 +10,10 @@ gem 'sass-rails', '>= 6'
 gem 'webpacker', '~> 4.0'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
+gem 'rspec_junit_formatter'
 gem 'bootsnap', '>= 1.4.2', require: false
 
-group :development, :test do
+group :development, :test, :staging do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 4.0', '>= 4.0.2'
 end
