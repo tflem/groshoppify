@@ -4,10 +4,6 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
 
-development:
-  <<: *default
-  database: groshoppify_development
-
 test:
   <<: *default
   user: postgres
