@@ -2,7 +2,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Solves yarn not found error in Circle CI
-  #config.webpacker.check_yarn_integrity = false
+  config.webpacker.check_yarn_integrity = false
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
