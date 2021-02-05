@@ -27,7 +27,6 @@ staging:
   <<: *default
   database: groshoppify_staging
   host: 127.0.0.1
-  password: <%= ENV['secret_key_base'] %>
 
 development:
   <<: *default
