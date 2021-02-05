@@ -16,3 +16,14 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=webpacker
+  webpacker:
+    build: .
+    command: bash -c "./bin/webpack-dev-server"
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+    volumes:
+      - .:/groshoppify
+    ports:
+      - "3035:3035"
