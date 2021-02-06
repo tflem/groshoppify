@@ -54,17 +54,87 @@ jobs:
           command: bundle exec rails db:schema:load --trace
       # Run rspec in parallel
       - ruby/rspec-test
-    
+      
+      # create directory for xml reports created by junit formatter
+      - run: mkdir -p tmp/test-reports/rspec/queue_mode/
+
       - run:
-          name: Setup Code Climate test-reporter
+          name: Install Code Climate Test Reporter
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter      
-      - run: # run tests
-          name: Run Test and Coverage
+            chmod +x ./cc-test-reporter
+      - run: ./cc-test-reporter before-build
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v2-dependencies-bundler-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v2-dependencies-bundler-
+
+      - run:
+          name: install ruby dependencies
           command: |
-            ./cc-test-reporter before-build            
-            ./cc-test-reporter after-build --exit-code $?
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v2-dependencies-bundler-{{ checksum "Gemfile.lock" }}
+
+      # wait for postgres to be available
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+      # Database setup
+      - run: bin/rails db:setup
+
+      # Run RSpec tests with knapsack_pro Queue Mode and use junit formatter
+      # junit formatter must be configured as described in FAQ for knapsack_pro Queue Mode
+      # this is also described in this article later
+      # https://github.com/KnapsackPro/knapsack_pro-ruby#how-to-use-junit-formatter-with-knapsack_pro-queue-mode
+      - run: bundle exec rake "--format RspecJunitFormatter --out tmp/test-reports/rspec/queue_mode/rspec.xml]"
+
+      - run:
+          name: Code Climate Test Coverage
+          command: |
+            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+
+      # store coverage directory with CodeClimate reports prepared based on simplecov reports
+      # it's special step used to persist a temporary file to be used by another job in the workflow
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - codeclimate.*.json
+
+      # store test reports created with junit formatter in order to allow CircleCI 
+      # show info about executed tests in UI on top of CI build steps
+      - store_test_results:
+          path: tmp/test-reports
+
+      # store test reports created with junit formatter in order to allow CircleCI 
+      # let you browse recorded xml files in Artifacts tab
+      - store_artifacts:
+          path: tmp/test-reports
+
+  upload-coverage:
+    docker:
+      - image: circleci/ruby:2.7.2-node    
+
+    steps:
+      # This will restore files from persist_to_workspace step
+      # Thanks to it we will have access to CodeClimate test coverage files from
+      # each parallel job. We need them in order to merge it into one file in next step.
+      - attach_workspace:
+          at: ~/groshoppify
+      - run:
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          # merge CodeClimate files from each parallel job into sum coverage
+          # and then upload it to CodeClimate dashboard
+          command: |
+            ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
@@ -75,6 +145,9 @@ workflows:
       - test:         # Then run test,
           requires:   # Test requires that build passes for it to run.
             - build
+      - upload-coverage:
+          requires:
+             - build
 
 deploy-dev:
   machine: true
@@ -87,3 +160,8 @@ deploy-dev:
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a groshoppify web
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a groshoppify web
+
+
+    
+      
+
