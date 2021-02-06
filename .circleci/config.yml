@@ -54,8 +54,7 @@ jobs:
           command: bundle exec rails db:schema:load --trace
       # Run rspec in parallel
       - ruby/rspec-test
-
-    steps:
+    
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -64,8 +63,7 @@ jobs:
       - run: # run tests
           name: Run Test and Coverage
           command: |
-            ./cc-test-reporter before-build
-            rspec spec -- --coverage
+            ./cc-test-reporter before-build            
             ./cc-test-reporter after-build --exit-code $?
 
 # We use workflows to orchestrate the jobs that we declared above.
