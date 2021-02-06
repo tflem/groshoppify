@@ -85,12 +85,7 @@ jobs:
       # wait for postgres to be available
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       # Database setup
-      - run: bin/rails db:setup      
-
-      - run:
-          name: Code Climate Test Coverage
-          command: |
-            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+      - run: bin/rails db:setup        
 
       # store test reports created with junit formatter in order to allow CircleCI 
       # show info about executed tests in UI on top of CI build steps
@@ -116,12 +111,7 @@ jobs:
           name: Install Code Climate Test Reporter
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-      - run:
-          # merge CodeClimate files from each parallel job into sum coverage
-          # and then upload it to CodeClimate dashboard
-          command: |
-            ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
+            chmod +x ./cc-test-reporter      
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
