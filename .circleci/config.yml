@@ -38,6 +38,19 @@ jobs:
       PGUSER: postgres
       PGPASSWORD: password
       RAILS_ENV: staging
+    
+    environment:
+      CC_TEST_REPORTER_ID: YOUR_CODE_CLIMATE_REPORTER_ID
+    executor: docker
+    steps:
+      - checkout
+      - codeclimate/with-cc-test-reporter:
+          after_build_args: '--coverage-input-type simplecov'
+          steps:
+            - run: bundle exec rspec
+orbs:
+  codeclimate: sue445/codeclimate@x.y.z
+
     # A series of steps to run, some are similar to those in "build".
     steps:
       - checkout 
