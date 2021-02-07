@@ -63,8 +63,7 @@ jobs:
           root: tmp
           paths:
             - cc-test-reporter
-  
-      steps:
+
         - checkout
         - attach_workspace:
             at: ~/groshoppify/tmp
@@ -82,18 +81,18 @@ jobs:
             root: tmp
             paths: 
               - codeclimate.backend.json  
-      upload-coverage:
-        environment: 
-        - CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
-      steps:
-        - attach_workspace:
-          at: ~/groshoppify/tmp
-        - run:
-            name: Upload coverage results to Code Climate
-            command: |
-              ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
-              ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
-     
+      
+        upload-coverage:
+          environment: 
+            - CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
+      
+          - attach_workspace:
+            at: ~/groshoppify/tmp
+          - run:
+              name: Upload coverage results to Code Climate
+              command: |
+                ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+                ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json     
       
  # We use workflows to orchestrate the jobs that we declared above.
 workflows:
