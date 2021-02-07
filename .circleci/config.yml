@@ -55,65 +55,52 @@ jobs:
       # Run rspec in parallel
       - ruby/rspec-test
 
-      # create directory for xml reports created by junit formatter
-      - run: mkdir -p tmp/test-reports/rspec/queue_mode/
-
       - run:
-          name: Install Code Climate Test Reporter
+          name:  Download cc-test-reporter
           command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-      - run: ./cc-test-reporter before-build
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v2-dependencies-bundler-{{ checksum "Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v2-dependencies-bundler-
-
-      - run:
-          name: install ruby dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-
-      - save_cache:
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
+      - persist_to_workspace:
+          root: tmp
           paths:
-            - ./vendor/bundle
-          key: v2-dependencies-bundler-{{ checksum "Gemfile.lock" }}
-
-      # wait for postgres to be available
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
-      # Database setup
-      - run: bin/rails db:setup        
-
-      # store test reports created with junit formatter in order to allow CircleCI 
-      # show info about executed tests in UI on top of CI build steps
-      - store_test_results:
-          path: tmp/test-reports
-
-      # store test reports created with junit formatter in order to allow CircleCI 
-      # let you browse recorded xml files in Artifacts tab
-      - store_artifacts:
-          path: tmp/test-reports
-
-  upload-coverage:
-    docker:
-      - image: circleci/ruby:2.7.2-node    
-
+            - cc-test-reporter
+  backend-tests:
+    <<: *defaults
     steps:
-      # This will restore files from persist_to_workspace step
-      # Thanks to it we will have access to CodeClimate test coverage files from
-      # each parallel job. We need them in order to merge it into one file in next step.
+      - checkout
       - attach_workspace:
-          at: ~/groshoppify
-      - run:
-          name: Install Code Climate Test Reporter
+          at: ~/groshoppify/tmp
+      - run: 
+          name: Setup dependencies
           command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter      
+            bundle install --without production --path=${BUNDLE_PATH:-vendor/bundle}
+            bundle exec rake db:create db:migrate
+      - run: 
+          name: Run backend tests
+          command: |
+            bundle exec rake
+            ./tmp/cc-test-reporter format-coverage -t simplecov -o tmp/codeclimate.backend.json coverage/backend/.resultset.json
+      - persist_to_workspace:
+          root: tmp
+          paths: 
+            - codeclimate.backend.json  
+  upload-coverage:
+    <<: *defaults
+    environment: 
+      - CC_TEST_REPORTER_ID: YOUR_REPO_CC_TEST_REPORTER_ID
+    steps:
+      - attach_workspace:
+          at: ~/repo/tmp
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+    
 
 # We use workflows to orchestrate the jobs that we declared above.
+
 workflows:
   version: 2
   build_and_test:     # The name of our workflow is "build_and_test"
@@ -122,9 +109,12 @@ workflows:
       - test:         # Then run test,
           requires:   # Test requires that build passes for it to run.
             - build
-      - upload-coverage:
-          requires:
-             - build
+            - backend-tests:
+                requires:
+                  - build
+            - upload-coverage:
+                requires:
+                  - backend-tests
 
 deploy-dev:
   machine: true
@@ -136,9 +126,4 @@ deploy-dev:
         sudo curl https://cli-assets.heroku.com/install.sh | sh
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a groshoppify web
-        HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a groshoppify web
-
-
-    
-      
-
+        HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a groshoppify web   
