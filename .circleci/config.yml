@@ -67,7 +67,7 @@ jobs:
       # junit formatter must be configured as described in FAQ for knapsack_pro Queue Mode
       # this is also described in this article later
       # https://github.com/KnapsackPro/knapsack_pro-ruby#how-to-use-junit-formatter-with-knapsack_pro-queue-mode
-      - run: bundle exec rake rspec spec --format RspecJunitFormatter --out tmp/test-reports/rspec/rspec.xml
+      - run: bundle exec rake spec -f RspecJunitFormatter -o tmp/test-reports/rspec/rspec.xml
 
       - run:
           name: Code Climate Test Coverage
