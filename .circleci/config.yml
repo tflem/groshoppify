@@ -1,69 +1,134 @@
-version: 2.1 # Use 2.1 to enable using orbs and other features.
 
-# Declare the orbs that we'll use in our config.
-orbs:
-  ruby: circleci/ruby@1.0.6
-  node: circleci/node@3.0.1
-
+version: 2.1
 jobs:
-  build: # our first job, named "build"
+  build:
+    # set here how many parallel jobs you want to run.
+    # more parallel jobs the faster is your CI build
+    parallelism: 2
     docker:
-      - image: cimg/ruby:2.7.2-node # use a tailored CircleCI docker image.
-    steps:
-      - checkout # pull down our git code.
-      - ruby/install-deps # use the ruby orb to install dependencies
-      # use the node orb to install our packages
-      # specifying that we use `yarn` and to cache dependencies with `yarn.lock`
-      # learn more: https://circleci.com/docs/2.0/caching/
-      - node/install-packages: 
-          pkg-manager: yarn
-          
-  test:  # our next job, called "test"
-    # we run "parallel job containers" to enable speeding up our tests;
-    # this splits our tests across multiple containers.
-    parallelism: 3 
-    # here we set TWO docker images.
-    docker:
-      - image: cimg/ruby:2.7.2-node # this is our primary docker image, where step commands run.
-      - image: circleci/postgres:12.3
-        environment: # add POSTGRES environment variables.
-          POSTGRES_USER: postgres
+      # specify the version you desire here
+      - image: circleci/ruby:2.7.2-node-browsers
+        environment:
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+          RAILS_ENV: test
+          RACK_ENV: test
+
+          # API token should be set in CircleCI environment variables settings instead of here
+          # KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC: rspec-token
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      - image: circleci/postgres:9.4.12-alpine
+        environment:
+          POSTGRES_DB: groshoppify_test
           POSTGRES_PASSWORD: password
-          POSTGRES_DB: groshoppify_staging
-    # environment variables specific to Ruby/Rails, applied to the primary container.
-    environment:
-      BUNDLE_JOBS: "3"
-      BUNDLE_RETRY: "3"
-      PGHOST: 127.0.0.1
-      PGUSER: postgres
-      PGPASSWORD: password
-      RAILS_ENV: staging
-    # A series of steps to run, some are similar to those in "build".
+          POSTGRES_USER: postgress
+
+    working_directory: ~/groshoppify
+
     steps:
-      - checkout 
-      - ruby/install-deps 
-      - node/install-packages:
-          pkg-manager: yarn
-      # Here we make sure that the secondary container boots 
-      # up before we run operations on the database.
+      - checkout
+
+      # create directory for xml reports created by junit formatter
+      - run: mkdir -p tmp/test-reports/rspec/
+
       - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run: ./cc-test-reporter before-build
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v2-dependencies-bundler-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v2-dependencies-bundler-
+
       - run:
-          name: Database setup
-          command: bundle exec rails db:schema:load --trace
-      # Run rspec in parallel
-      - ruby/rspec-test    
-    
-# We use workflows to orchestrate the jobs that we declared above.
+          name: install ruby dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v2-dependencies-bundler-{{ checksum "Gemfile.lock" }}
+
+      # wait for postgres to be available
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+      # Database setup
+      - run: bin/rails db:setup
+
+      # Run RSpec tests with knapsack_pro Queue Mode and use junit formatter
+      # junit formatter must be configured as described in FAQ for knapsack_pro Queue Mode
+      # this is also described in this article later
+      # https://github.com/KnapsackPro/knapsack_pro-ruby#how-to-use-junit-formatter-with-knapsack_pro-queue-mode
+      - run: bundle exec rake "rspec[--format documentation --format RspecJunitFormatter --out tmp/test-reports/rspec/rspec.xml]"
+
+      - run:
+          name: Code Climate Test Coverage
+          command: |
+            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+
+      # store coverage directory with CodeClimate reports prepared based on simplecov reports
+      # it's special step used to persist a temporary file to be used by another job in the workflow
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - codeclimate.*.json
+
+      # store test reports created with junit formatter in order to allow CircleCI 
+      # show info about executed tests in UI on top of CI build steps
+      - store_test_results:
+          path: tmp/test-reports
+
+      # store test reports created with junit formatter in order to allow CircleCI 
+      # let you browse recorded xml files in Artifacts tab
+      - store_artifacts:
+          path: tmp/test-reports
+
+  upload-coverage:
+    docker:
+      - image: circleci/ruby:2.7.2-node
+    environment:
+      # you can add your CodeClimate test report ID here or in CircleCI
+      # settings for environment variables
+      CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
+    working_directory: ~/groshoppify
+
+    steps:
+      # This will restore files from persist_to_workspace step
+      # Thanks to it we will have access to CodeClimate test coverage files from
+      # each parallel job. We need them in order to merge it into one file in next step.
+      - attach_workspace:
+          at: ~/groshoppify
+      - run:
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          # merge CodeClimate files from each parallel job into sum coverage
+          # and then upload it to CodeClimate dashboard
+          command: |
+            ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
+
 workflows:
   version: 2
-  build_and_test:     # The name of our workflow is "build_and_test"
-    jobs:             # The list of jobs we run as part of this workflow.
-      - build         # Run build first.
-      - test:         # Then run test,
-          requires:   # Test requires that build passes for it to run.
-            - build
+
+  commit:
+    jobs:
+      # run our CI build with tests
+      - build
+      # once CI build is completed then we merge CodeClimate reports
+      # from each parallel job and upload summary coverage to CodeClimate
+      - upload-coverage:
+          requires:
+             - build
       
 deploy-dev:
   machine: true
