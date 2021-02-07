@@ -44,7 +44,7 @@ jobs:
     executor: docker
     
       - checkout
-      - codeclimate/with-cc-test-reporter:
+      - codeclimate/with-cc-test-reporter: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
           after_build_args: '--coverage-input-type simplecov'
           steps:
             - run: bundle exec rspec
