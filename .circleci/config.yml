@@ -42,7 +42,7 @@ jobs:
     environment:
       CC_TEST_REPORTER_ID: YOUR_CODE_CLIMATE_REPORTER_ID
     executor: docker
-    steps:
+    
       - checkout
       - codeclimate/with-cc-test-reporter:
           after_build_args: '--coverage-input-type simplecov'
