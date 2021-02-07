@@ -37,12 +37,10 @@ jobs:
       PGHOST: 127.0.0.1
       PGUSER: postgres
       PGPASSWORD: password
-      RAILS_ENV: staging
-    
-    environment:
+      RAILS_ENV: staging   
       CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
-    executor: docker
     
+    executor: docker    
       - checkout
       - codeclimate/with-cc-test-reporter: 
           after_build_args: '--coverage-input-type simplecov'
