@@ -55,7 +55,7 @@ jobs:
       # Run rspec in parallel
       - ruby/rspec-test
 
-      jobs:
+jobs:
   build:
     <<: *defaults
     steps:
