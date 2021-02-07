@@ -1,4 +1,5 @@
 version: 2.1 # Use 2.1 to enable using orbs and other features.
+defaults: &defaults
 
 # Declare the orbs that we'll use in our config.
 orbs:
@@ -55,6 +56,10 @@ jobs:
       # Run rspec in parallel
       - ruby/rspec-test
 
+jobs:
+  build:
+    <<: *defaults
+    steps:
       - run:
           name:  Download cc-test-reporter
           command: |
@@ -65,7 +70,9 @@ jobs:
           root: tmp
           paths:
             - cc-test-reporter
-  
+  backend-tests:
+    <<: *defaults
+    steps:
       - checkout
       - attach_workspace:
           at: ~/groshoppify/tmp
@@ -84,11 +91,12 @@ jobs:
           paths: 
             - codeclimate.backend.json  
   upload-coverage:
+    <<: *defaults
     environment: 
-      - CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
+      - CC_TEST_REPORTER_ID: YOUR_REPO_CC_TEST_REPORTER_ID
     steps:
       - attach_workspace:
-          at: ~/groshoppify/tmp
+          at: ~/repo/tmp
       - run:
           name: Upload coverage results to Code Climate
           command: |
@@ -123,3 +131,6 @@ deploy-dev:
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a groshoppify web
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a groshoppify web
+
+
+
