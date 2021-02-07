@@ -52,9 +52,7 @@ jobs:
       - run:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
-
-defaults: &defaults
-  working_directory: ~/groshoppify
+  
   docker:
     - image: cimg/ruby:2.7.2-node
       environment:
@@ -99,23 +97,7 @@ jobs:
       - persist_to_workspace:
           root: tmp
           paths: 
-            - codeclimate.backend.json
-  frontend-tests:
-    <<: *defaults
-    steps:
-      - checkout 
-      - attach_workspace:
-          at: ~/groshoppify/tmp
-      - run: npm install
-      - run: 
-          name: Run frontend testss
-          command: |
-            npm test
-            ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/frontend/lcov.info
-      - persist_to_workspace:
-          root: tmp
-          paths: 
-            - codeclimate.frontend.json
+            - codeclimate.backend.json  
   upload-coverage:
     <<: *defaults
     environment: 
@@ -130,7 +112,6 @@ jobs:
             ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
 workflows:
   version: 2
-
   commit:
     jobs:
       - build
@@ -143,8 +124,6 @@ workflows:
       - upload-coverage:
           requires:
              - backend-tests
-             - frontend-tests
-
       
  # We use workflows to orchestrate the jobs that we declared above.
 
