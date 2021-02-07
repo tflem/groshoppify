@@ -55,10 +55,6 @@ jobs:
       # Run rspec in parallel
       - ruby/rspec-test
 
-jobs:
-  build:
-    <<: *defaults
-    steps:
       - run:
           name:  Download cc-test-reporter
           command: |
@@ -69,9 +65,7 @@ jobs:
           root: tmp
           paths:
             - cc-test-reporter
-  backend-tests:
-    <<: *defaults
-    steps:
+  
       - checkout
       - attach_workspace:
           at: ~/groshoppify/tmp
