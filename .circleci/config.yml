@@ -55,6 +55,10 @@ jobs:
       # Run rspec in parallel
       - ruby/rspec-test
 
+      jobs:
+  build:
+    <<: *defaults
+    steps:
       - run:
           name:  Download cc-test-reporter
           command: |
@@ -96,8 +100,7 @@ jobs:
           name: Upload coverage results to Code Climate
           command: |
             ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
-            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
-    
+            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json     
 
 # We use workflows to orchestrate the jobs that we declared above.
 
@@ -126,4 +129,4 @@ deploy-dev:
         sudo curl https://cli-assets.heroku.com/install.sh | sh
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a groshoppify web
-        HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a groshoppify web   
+        HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a groshoppify web
