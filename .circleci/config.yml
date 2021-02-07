@@ -37,18 +37,7 @@ jobs:
       PGHOST: 127.0.0.1
       PGUSER: postgres
       PGPASSWORD: password
-      RAILS_ENV: staging   
-      CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
-    
-    executor: docker    
-      - checkout
-      - codeclimate/with-cc-test-reporter: 
-          after_build_args: '--coverage-input-type simplecov'
-          steps:
-            - run: bundle exec rspec
-orbs:
-  codeclimate: sue445/codeclimate@x.y.z
-
+      RAILS_ENV: staging
     # A series of steps to run, some are similar to those in "build".
     steps:
       - checkout 
@@ -64,8 +53,8 @@ orbs:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
       # Run rspec in parallel
-      - ruby/rspec-test      
-
+      - ruby/rspec-test    
+    
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
   version: 2
