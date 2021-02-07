@@ -56,7 +56,6 @@ jobs:
       # Run rspec in parallel
       - ruby/rspec-test
 
-jobs:
   build:
     <<: *defaults
     steps:
@@ -93,10 +92,10 @@ jobs:
   upload-coverage:
     <<: *defaults
     environment: 
-      - CC_TEST_REPORTER_ID: YOUR_REPO_CC_TEST_REPORTER_ID
+      - CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
     steps:
       - attach_workspace:
-          at: ~/repo/tmp
+          at: ~/groshoppify/tmp
       - run:
           name: Upload coverage results to Code Climate
           command: |
