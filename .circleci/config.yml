@@ -52,22 +52,7 @@ jobs:
       - run:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
-  
-  docker:
-    - image: cimg/ruby:2.7.2-node
-      environment:
-        PGHOST: 127.0.0.1
-        PGUSER: postgres
-        RAILS_ENV: test
-    - image: circleci/postgres:12.3
-      environment:
-        POSTGRES_USER: postgres
-        POSTGRES_DB: groshoppify_test
-        POSTGRES_PASSWORD: password
-jobs:
-  build:
-    <<: *defaults
-    steps:
+
       - run:
           name:  Download cc-test-reporter
           command: |
@@ -78,55 +63,39 @@ jobs:
           root: tmp
           paths:
             - cc-test-reporter
-  backend-tests:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
+  
+      steps:
+        - checkout
+        - attach_workspace:
+            at: ~/groshoppify/tmp
+        - run: 
+            name: Setup dependencies
+            command: |
+              bundle install --without production --path=${BUNDLE_PATH:-vendor/bundle}
+              bundle exec rake db:create db:migrate
+        - run: 
+            name: Run backend tests
+            command: |
+              bundle exec rake
+              ./tmp/cc-test-reporter format-coverage -t simplecov -o tmp/codeclimate.backend.json coverage/backend/.resultset.json
+        - persist_to_workspace:
+            root: tmp
+            paths: 
+              - codeclimate.backend.json  
+      upload-coverage:
+        environment: 
+        - CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
+      steps:
+        - attach_workspace:
           at: ~/groshoppify/tmp
-      - run: 
-          name: Setup dependencies
-          command: |
-            bundle install --without production --path=${BUNDLE_PATH:-vendor/bundle}
-            bundle exec rake db:create db:migrate
-      - run: 
-          name: Run backend tests
-          command: |
-            bundle exec rake
-            ./tmp/cc-test-reporter format-coverage -t simplecov -o tmp/codeclimate.backend.json coverage/backend/.resultset.json
-      - persist_to_workspace:
-          root: tmp
-          paths: 
-            - codeclimate.backend.json  
-  upload-coverage:
-    <<: *defaults
-    environment: 
-      - CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
-    steps:
-      - attach_workspace:
-          at: ~/groshoppify/tmp
-      - run:
-          name: Upload coverage results to Code Climate
-          command: |
-            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
-            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
-workflows:
-  version: 2
-  commit:
-    jobs:
-      - build
-      - backend-tests:
-          requires:
-            - build
-      - frontend-tests: 
-          requires: 
-             - build
-      - upload-coverage:
-          requires:
-             - backend-tests
+        - run:
+            name: Upload coverage results to Code Climate
+            command: |
+              ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+              ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+     
       
  # We use workflows to orchestrate the jobs that we declared above.
-
 workflows:
   version: 2
   build_and_test:     # The name of our workflow is "build_and_test"
@@ -134,7 +103,12 @@ workflows:
       - build         # Run build first.
       - test:         # Then run test,
           requires:   # Test requires that build passes for it to run.
+      - backend-tests:
+          requires:
             - build
+        - upload-coverage:
+          requires:
+            - backend-tests
             
 deploy-dev:
   machine: true
