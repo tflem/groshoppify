@@ -1,5 +1,4 @@
 version: 2.1 # Use 2.1 to enable using orbs and other features.
-defaults: &defaults
 
 # Declare the orbs that we'll use in our config.
 orbs:
@@ -53,9 +52,21 @@ jobs:
       - run:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
-      # Run rspec in parallel
-      - ruby/rspec-test
 
+defaults: &defaults
+  working_directory: ~/groshoppify
+  docker:
+    - image: cimg/ruby:2.7.2-node
+      environment:
+        PGHOST: 127.0.0.1
+        PGUSER: postgres
+        RAILS_ENV: test
+    - image: circleci/postgres:12.3
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_DB: groshoppify_test
+        POSTGRES_PASSWORD: password
+jobs:
   build:
     <<: *defaults
     steps:
@@ -88,7 +99,23 @@ jobs:
       - persist_to_workspace:
           root: tmp
           paths: 
-            - codeclimate.backend.json  
+            - codeclimate.backend.json
+  frontend-tests:
+    <<: *defaults
+    steps:
+      - checkout 
+      - attach_workspace:
+          at: ~/groshoppify/tmp
+      - run: npm install
+      - run: 
+          name: Run frontend testss
+          command: |
+            npm test
+            ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/frontend/lcov.info
+      - persist_to_workspace:
+          root: tmp
+          paths: 
+            - codeclimate.frontend.json
   upload-coverage:
     <<: *defaults
     environment: 
@@ -100,9 +127,26 @@ jobs:
           name: Upload coverage results to Code Climate
           command: |
             ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
-            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json     
+            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+workflows:
+  version: 2
 
-# We use workflows to orchestrate the jobs that we declared above.
+  commit:
+    jobs:
+      - build
+      - backend-tests:
+          requires:
+            - build
+      - frontend-tests: 
+          requires: 
+             - build
+      - upload-coverage:
+          requires:
+             - backend-tests
+             - frontend-tests
+
+      
+ # We use workflows to orchestrate the jobs that we declared above.
 
 workflows:
   version: 2
@@ -112,13 +156,7 @@ workflows:
       - test:         # Then run test,
           requires:   # Test requires that build passes for it to run.
             - build
-            - backend-tests:
-                requires:
-                  - build
-            - upload-coverage:
-                requires:
-                  - backend-tests
-
+            
 deploy-dev:
   machine: true
   steps:
@@ -130,6 +168,3 @@ deploy-dev:
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a groshoppify web
         HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a groshoppify web
-
-
-
