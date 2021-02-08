@@ -69,7 +69,7 @@ jobs:
       # https://github.com/KnapsackPro/knapsack_pro-ruby#how-to-use-junit-formatter-with-knapsack_pro-queue-mode
       - run: bundle exec rake spec
 
-      - run: bunle exec rake webpacker:install
+      - run: bundle exec rake webpacker:install
 
       - run:
           name: Code Climate Test Coverage
