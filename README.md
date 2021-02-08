@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/<gh>/<tflem>/<groshoppify>.svg?style=svg&circle-token=<b8eae17d601ac6be85ba879047590a06f1a787ef>)](<https://app.circleci.com/pipelines/github/tflem/groshoppify>)
+[![CircleCI](https://circleci.com/gh/tflem/groshoppify.svg?style=svg&circle-token=b8eae17d601ac6be85ba879047590a06f1a787ef)](<https://app.circleci.com/pipelines/github/tflem/groshoppify>)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f8f46325db298ebd6193/maintainability)](https://codeclimate.com/github/tflem/groshoppify/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f8f46325db298ebd6193/test_coverage)](https://codeclimate.com/github/tflem/groshoppify/test_coverage)
 
@@ -10,7 +10,7 @@
 * Continuous Integration/Deployment: Circle CI
 * Ruby on Rails 6.1
 * HTML5 and Sass
-* PostgreSQL 11
+* PostgreSQL 13.1
 * Testing Framework: RSpec 4.0
 * Bootstrap 5
 
