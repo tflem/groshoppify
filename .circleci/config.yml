@@ -136,7 +136,7 @@ deploy-dev:
   machine: true
   steps:
     - checkout
-    - run:
+    - run: heroku run rake db:migrate
       name: Build and push Docker image to Heroku
       command: |
         sudo curl https://cli-assets.heroku.com/install.sh | sh
