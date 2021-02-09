@@ -1,9 +1,8 @@
-
 version: 2.1
 
 orbs:
   heroku: circleci/heroku@0.0.10
-  
+
 jobs:
   build:
     # set here how many parallel jobs you want to run.
