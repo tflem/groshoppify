@@ -1,5 +1,9 @@
 
 version: 2.1
+
+orbs:
+  heroku: circleci/heroku@0.0.10
+  
 jobs:
   build:
     # set here how many parallel jobs you want to run.
@@ -119,18 +123,6 @@ jobs:
           command: |
             ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
 
-deploy-dev:
-  machine: true
-  steps:
-    - checkout
-    - run: heroku run rake db:migrate
-      name: Build and push Docker image to Heroku
-      command: |
-        sudo curl https://cli-assets.heroku.com/install.sh | sh
-        HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
-        HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a groshoppify web
-        HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a groshoppify web
-
 workflows:
   version: 2
 
@@ -143,7 +135,13 @@ workflows:
       - upload-coverage:
           requires:
              - build
-      - deploy-dev:
+
+  heroku_deploy:
+    jobs:
+      - build
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
           requires:
-             - build
-      
+            - build
+          filters:
+            branches:
+              only: main
