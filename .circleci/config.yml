@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  heroku: circleci/heroku@0.0.10
-
 jobs:
   build:
     # set here how many parallel jobs you want to run.
@@ -12,19 +9,17 @@ jobs:
       # specify the version you desire here
       - image: circleci/ruby:2.7.2-node-browsers
         environment:
+          PGHOST: 127.0.0.1
           PGUSER: postgres
-          RAILS_ENV: development
-          RACK_ENV: development
-
-          # API token should be set in CircleCI environment variables settings instead of here
-          # KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC: rspec-token
+          RAILS_ENV: staging
+          RACK_ENV: staging          
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      - image: circleci/postgres:9.4.12-alpine
+      - image: circleci/postgres:12.3
         environment:
-          POSTGRES_DB: groshoppify_development
+          POSTGRES_DB: groshoppify_staging
           POSTGRES_PASSWORD: password
           POSTGRES_USER: postgress
 

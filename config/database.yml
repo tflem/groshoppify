@@ -7,6 +7,11 @@ default: &default
   host: db
   port: 5432
 
+staging:
+  <<: *default
+  database: groshoppify_staging
+  host: 127.0.0.1
+
 development:
   <<: *default
   database: groshoppify_development
