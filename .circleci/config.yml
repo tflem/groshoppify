@@ -77,7 +77,7 @@ jobs:
       - run:
           name: Code Climate Test Coverage
           command: |
-            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+            ./cc-test-reporter format-coverage -t simplecov -o "coverage/.resultset.json:simplecov"
 
       # store coverage directory with CodeClimate reports prepared based on simplecov reports
       # it's special step used to persist a temporary file to be used by another job in the workflow
@@ -102,7 +102,7 @@ jobs:
     environment:
       # you can add your CodeClimate test report ID here or in CircleCI
       # settings for environment variables
-      CC_TEST_REPORTER_ID: c510ec133f8ee076e959cc03287603c6f1ab3ec5a9483886a31d4a9c1eb4ca69
+      CC_TEST_REPORTER_ID: CODECLIMATE_TEST_ID
     working_directory: ~/groshoppify
 
     steps:

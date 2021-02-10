@@ -13,8 +13,7 @@ development:
   
 test:
   <<: *default
-  database: groshoppify_test
-  host: 127.0.0.1
+  database: groshoppify_test  
 
 production:
   <<: *default
