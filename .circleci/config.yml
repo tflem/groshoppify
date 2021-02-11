@@ -29,9 +29,6 @@ jobs:
 
     working_directory: ~/groshoppify
 
-    steps:
-      - checkout
-
       # create directory for xml reports created by junit formatter
       - run: mkdir -p tmp/test-reports/rspec/
 
