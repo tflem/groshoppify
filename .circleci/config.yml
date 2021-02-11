@@ -93,7 +93,7 @@ jobs:
     environment:
       # you can add your CodeClimate test report ID here or in CircleCI
       # settings for environment variables
-      CC_TEST_REPORTER_ID: CC_TEST_REPORTER_ID
+      CC_TEST_REPORTER_ID:
     working_directory: ~/groshoppify
 
     steps:
