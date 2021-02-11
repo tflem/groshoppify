@@ -10,9 +10,11 @@ jobs:
       - image: circleci/ruby:2.7.2-node
       - image: circleci/postgres:12.3
         environment:
+          PGHOST: 127.0.0.1
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: groshoppify_staging  
+          RAILS_ENV: staging
     steps:
       - checkout          
 
