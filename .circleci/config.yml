@@ -1,5 +1,9 @@
 version: 2.1
 
+orbs:
+  ruby: circleci/ruby@1.0.6
+  node: circleci/node@3.0.1
+
 jobs:
   build:
     # set here how many parallel jobs you want to run.
@@ -8,20 +12,20 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/ruby:2.7.2-node-browsers
-        environment:
-          PGHOST: 127.0.0.1
-          PGUSER: postgres
-          RAILS_ENV: staging
-          RACK_ENV: staging          
+    steps:
+      - checkout
+      - ruby/install-deps
+      - node/install-packages:
+          pkg-manager: yarn          
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       - image: circleci/postgres:12.3
         environment:
-          POSTGRES_DB: groshoppify_staging
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-          POSTGRES_USER: postgress
+          POSTGRES_DB: groshoppify_staging         
 
     working_directory: ~/groshoppify
 
