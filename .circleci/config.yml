@@ -59,9 +59,9 @@ jobs:
       # wait for postgres to be available
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       # Database setup
-      - run: bin/rails db:setup
-
-      #- run: bundle exec rails webpacker:install      
+      - run: bin/rails db:setup         
+      - run: yarn install
+      - run: bundle exec rails webpacker:install   
       - run: bundle exec rspec spec      
 
       - run:
