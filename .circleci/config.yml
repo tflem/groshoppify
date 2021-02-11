@@ -12,6 +12,11 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/ruby:2.7.2-node-browsers
+      - image: circleci/postgres:12.3
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: groshoppify_staging  
     steps:
       - checkout
       - ruby/install-deps
@@ -20,12 +25,7 @@ jobs:
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      - image: circleci/postgres:12.3
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: groshoppify_staging  
+      # documented at https://circleci.com/docs/2.0/circleci-images/      
     
       # create directory for xml reports created by junit formatter
       - run: mkdir -p tmp/test-reports/rspec/
