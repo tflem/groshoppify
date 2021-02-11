@@ -61,7 +61,7 @@ jobs:
       # Database setup
       - run: bin/rails db:setup
 
-      #- run: bundle exec rake webpacker:install      
+      - run: bundle exec rails webpacker:install      
       - run: bundle exec rspec spec      
 
       - run:
