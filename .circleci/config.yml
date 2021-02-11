@@ -15,6 +15,9 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: groshoppify_staging  
           RAILS_ENV: staging
+
+    working_directory: ~/groshoppify
+    
     steps:
       - checkout          
 
