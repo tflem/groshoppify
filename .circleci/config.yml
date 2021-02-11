@@ -25,10 +25,8 @@ jobs:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-          POSTGRES_DB: groshoppify_staging         
-
-    working_directory: ~/groshoppify
-
+          POSTGRES_DB: groshoppify_staging  
+    
       # create directory for xml reports created by junit formatter
       - run: mkdir -p tmp/test-reports/rspec/
 
