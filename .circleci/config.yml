@@ -60,8 +60,7 @@ jobs:
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       # Database setup
       - run: bin/rails db:setup         
-      - run: yarn install
-      #- run: bundle exec rails webpacker:install   
+      - run: yarn install   
       - run: bundle exec rspec spec      
 
       - run:
@@ -89,11 +88,7 @@ jobs:
 
   upload-coverage:
     docker:
-      - image: circleci/ruby:2.7.2-node
-    #environment:
-      # you can add your CodeClimate test report ID here or in CircleCI
-      # settings for environment variables
-      #CC_TEST_REPORTER_ID:a0ab19b0a85cd16c059f1e79dc297354aa97e0533b60de91181eb54c890eec67 
+      - image: circleci/ruby:2.7.2-node    
     working_directory: ~/groshoppify
 
     steps:
