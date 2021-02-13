@@ -60,7 +60,8 @@ jobs:
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       # Database setup
       - run: bin/rails db:setup         
-      - run: yarn install   
+      - run: yarn install
+      - run: rake webpacker:compile   
       - run: bundle exec rspec spec      
 
       - run:
