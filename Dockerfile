@@ -43,7 +43,7 @@ USER $USER_ID:$GROUP_ID
 WORKDIR $APP_DIR
 
 # Install rails related dependencies
-COPY --chown=1000:1000 Gemfile* $APP_DIR/
+COPY --chown=1000:1000 Gemfile* /home/tfleming/groshoppify
 
 # For webpacker / node_modules
 COPY --chown=$USER_ID:$GROUP_ID package.json $APP_DIR
