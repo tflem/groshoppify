@@ -1,27 +1,17 @@
+# config/database.yml
+
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: 5
-  username: postgres
-  password: password
   host: db
-  port: 5432
-
-staging:
-  <<: *default
-  database: groshoppify_staging
-  host: 127.0.0.1
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  pool: 5
 
 development:
   <<: *default
   database: groshoppify_development
-  
+
 test:
   <<: *default
-  database: groshoppify_test  
-
-production:
-  <<: *default
-  database: groshoppify_production
-  username: groshoppify
-  password: <%= ENV['GROSHOPPIFY_DATABASE_PASSWORD'] %>
+  database: groshoppify_test
