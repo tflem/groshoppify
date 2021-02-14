@@ -14,7 +14,7 @@ jobs:
           RAILS_ENV: staging
           RACK_ENV: staging
       
-      - image: circleci/postgres:9.4.12-alpine
+      - image: circleci/postgres:9.6.9-alpine
         environment:
           POSTGRES_DB: groshoppify_staging
           POSTGRES_USER: postgres
@@ -60,7 +60,8 @@ jobs:
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       # Database setup
       - run: bin/rails db:setup         
-      - run: yarn install        
+      - run: yarn install
+      - run: bundle exec rails webpacker:compile   
       - run: bundle exec rspec spec      
 
       - run:

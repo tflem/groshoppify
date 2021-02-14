@@ -5,11 +5,11 @@ version: "3"
 services:
   web:
     environment:
-      NODE_ENV: development
-      RAILS_ENV: development
+      NODE_ENV: staging
+      RAILS_ENV: staging
       WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: password
 
     build:
       context: .
@@ -36,7 +36,7 @@ services:
   db:
     image: postgres:12.2
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: password
     volumes:
       - db_data:/var/lib/postgresql/data
 
