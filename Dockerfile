@@ -17,16 +17,6 @@ RUN mkdir /groshoppify
 WORKDIR /groshoppify
 COPY Gemfile /groshoppify/Gemfile
 COPY Gemfile.lock /groshoppify/Gemfile.lock
-
-RUN yarn install --production
-COPY . .
-RUN bin/rails webpacker:compile
-RUN bin/rails assets:precompile
-# Remove folders not needed in resulting image
-RUN rm -rf node_modules vendor/assets spec tmp/cache/assets  tmp/cache/bootsnap-compile-cache tmp/cache/pids
-# tmp/cache
-
-
 RUN bundler install
 COPY . /groshoppify
 
