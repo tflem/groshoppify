@@ -1,9 +1,5 @@
 build:
   docker:
     web: Dockerfile
-run: 
-  web: yarn install
-run:
-  web: bundle exec rails webpacker:compile
 run:
   web: bundle exec puma -C config/puma.rb
