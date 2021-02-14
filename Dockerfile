@@ -20,8 +20,8 @@ EXPOSE 3000
 EXPOSE 3035
 
 # This is to fix an issue on Linux with permissions issues
-ARG USER_ID=tfleming
-ARG GROUP_ID=tfleming
+ARG USER_ID=1000
+ARG GROUP_ID=1000
 ARG APP_DIR=/home/tfleming/groshoppify
 
 # Create a non-root user
