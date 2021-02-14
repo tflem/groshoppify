@@ -11,8 +11,8 @@ jobs:
         environment:
           PGHOST: 127.0.0.1
           PGUSER: postgres
-          RAILS_ENV: development
-          RACK_ENV: development
+          RAILS_ENV: test
+          RACK_ENV: test
       
       - image: circleci/postgres:9.6.9-alpine
         environment:
