@@ -20,9 +20,9 @@ EXPOSE 3000
 EXPOSE 3035
 
 # This is to fix an issue on Linux with permissions issues
-ARG USER_ID=1000
-ARG GROUP_ID=1000
-ARG APP_DIR=/home/user/groshoppify
+ARG USER_ID=tfleming
+ARG GROUP_ID=tfleming
+ARG APP_DIR=/home/tfleming/groshoppify
 
 # Create a non-root user
 RUN groupadd --gid $GROUP_ID user
@@ -32,7 +32,7 @@ RUN useradd --no-log-init --uid $USER_ID --gid $GROUP_ID user --create-home
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
-# Permissions
+# Permissions crap
 RUN mkdir -p $APP_DIR
 RUN chown -R $USER_ID:$GROUP_ID $APP_DIR
 
