@@ -46,13 +46,13 @@ WORKDIR $APP_DIR
 COPY --chown=1000:1000 Gemfile* $APP_DIR/
 
 # For webpacker / node_modules
-COPY --chown=$USER_ID:$GROUP_ID package.json $APP_DIR
-COPY --chown=$USER_ID:$GROUP_ID yarn.lock $APP_DIR
+COPY --chown=1000:1000 package.json $APP_DIR
+COPY --chown=1000:1000 yarn.lock $APP_DIR
 
 RUN bundle install
 
 # Copy over all files
-COPY --chown=$USER_ID:$GROUP_ID . .
+COPY --chown=1000:1000 . .
 
 RUN yarn install --check-files
 
