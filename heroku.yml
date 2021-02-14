@@ -4,6 +4,6 @@ build:
 run: 
   web: yarn install
 run:
-  web: rails webpacker:install
+  web: bundle exec rails webpacker:compile
 run:
   web: bundle exec puma -C config/puma.rb
