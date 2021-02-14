@@ -55,6 +55,7 @@ RUN bundle install
 COPY --chown=1000:1000 . .
 
 RUN yarn install --check-files
+RUN bin/rails webpacker:install
 
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
