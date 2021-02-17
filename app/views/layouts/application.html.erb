@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Groshoppify</title>
+    <title>
+      <% if content_for?(:title)%>
+        <%= yield(:title) %>
+      <% else %>
+        Groshoppify
+      <% end %>
+    </title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
