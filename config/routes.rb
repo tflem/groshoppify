@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-	root "products#index"
+  root 'products#index'
 
-
-	resources :products
+  resources :products
 end
