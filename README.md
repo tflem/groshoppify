@@ -6,14 +6,15 @@
 
 > This a product tracking application, developed with the following:
 
-* Ruby 2.7.2
 * Docker 20.10.3 and Docker Compose 1.28.2
-* Continuous Integration/Deployment: Circle CI and Heroku
+* Testing Framework: RSpec 4.0
+* Ruby 2.7.2
 * Ruby on Rails 6.1.2.1
 * HTML5 and Sass
 * PostgreSQL 12.2
-* Testing Framework: RSpec 4.0
 * Bootstrap 5
+* Rubocop 1.10.0
+* Continuous Integration/Deployment: Circle CI and Heroku
 
 ## Setup
 
