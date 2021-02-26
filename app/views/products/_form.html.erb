@@ -2,7 +2,7 @@
   <% if product.errors.any? %>
   <div id='error_info'>
     <h2><%= pluralize(product.errors.count, "error") %>
-    kept this project from being saved:</h2>
+    kept this product from being saved:</h2>
 
     <ul>
       <% product.errors.full_messages.each do |message| %>
