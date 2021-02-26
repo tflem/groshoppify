@@ -10,9 +10,9 @@ RSpec.describe 'Our users can create new products' do
   end
 
   it 'with valid attributes' do
-    fill_in 'Name', with: 'Milk'
-    fill_in 'Description', with: 'Pickup two percent, not skim.'
+    fill_in 'Name', with: 'Milk'    
     fill_in 'Quantity', with: 2
+    fill_in 'Description', with: 'Pickup two percent, not skim.'
     click_button 'Create Product'
 
     expect(page).to have_content 'Product information has been created.'
