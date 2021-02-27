@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i(show edit update destroy)
-  
+  before_action :set_product, only: %i[show edit update destroy]
+
   def index
     @products = Product.all
   end
@@ -23,13 +23,11 @@ class ProductsController < ApplicationController
     end
   end
 
-  def show    
-  end
+  def show; end
 
-  def edit    
-  end
+  def edit; end
 
-  def update    
+  def update
     if @product.update(product_params)
       flash[:notice] = 'Product information has been updated.'
       redirect_to @product
@@ -39,7 +37,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  def destroy    
+  def destroy
     @product.destroy
 
     flash[:notice] = 'Product has been deleted.'
