@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ProductsController < ApplicationController
+  before_action :set_product, only: %i(show edit update destroy)
+  
   def index
     @products = Product.all
   end
@@ -21,17 +23,13 @@ class ProductsController < ApplicationController
     end
   end
 
-  def show
-    @product = Product.find(params[:id])
+  def show    
   end
 
-  def edit
-    @product = Product.find(params[:id])
+  def edit    
   end
 
-  def update
-    @product = Product.find(params[:id])
-
+  def update    
     if @product.update(product_params)
       flash[:notice] = 'Product information has been updated.'
       redirect_to @product
@@ -41,7 +39,21 @@ class ProductsController < ApplicationController
     end
   end
 
+  def destroy    
+    @product.destroy
+
+    flash[:notice] = 'Product has been deleted.'
+    redirect_to products_path
+  end
+
   private
+
+  def set_product
+    @product = Product.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = 'The product you are looking for does not exist.'
+    redirect_to products_path
+  end
 
   def product_params
     params.require(:product).permit(:name, :description, :quantity)
