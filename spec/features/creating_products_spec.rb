@@ -27,7 +27,7 @@ RSpec.describe 'Our users can create new products' do
     click_button 'Create Product'
 
     expect(page).to have_content 'Product information has not been created.'
-    expect(page).to have_content "Name can't be blank"
-    expect(page).to have_content "Quantity can't be blank"
+    expect(page).to have_content 'Name can\'t be blank'
+    expect(page).to have_content 'Quantity can\'t be blank'
   end
 end

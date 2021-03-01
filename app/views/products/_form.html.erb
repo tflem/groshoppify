@@ -1,7 +1,7 @@
 <%= form_with(model: product, local: true) do |form| %>
   <% if product.errors.any? %>
   <div id='error_info'>
-    <h2><%= pluralize(product.errors.count, "error") %>
+    <h2><%= pluralize(product.errors.count, 'error') %>
     kept this product from being saved:</h2>
 
     <ul>
