@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class NotesController < ApplicationController
   before_action :set_product
-  before_action :set_note, only: %i[show edit update destroy]
-  
+  before_action :set_note, only: %i[show]
+
   def new
     @note = @product.notes.build
   end
@@ -18,8 +20,7 @@ class NotesController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
   private
 
