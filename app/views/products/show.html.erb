@@ -18,3 +18,12 @@
     <li><%= link_to 'New Note', new_product_note_path(@product) %></li>
   </ul>
 </header>
+
+<ul class="notes">
+  <% @product.notes.each do |note| %>
+    <li>
+      #<%= note.id %> -
+      <%= link_to note.name, [@product, note] %>
+    </li>
+  <% end %>
+</ul>
