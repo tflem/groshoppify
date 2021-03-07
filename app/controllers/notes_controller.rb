@@ -2,7 +2,7 @@
 
 class NotesController < ApplicationController
   before_action :set_product
-  before_action :set_note, only: %i[show]
+  before_action :set_note, only: %i[show edit update]
 
   def new
     @note = @product.notes.build
@@ -21,6 +21,18 @@ class NotesController < ApplicationController
   end
 
   def show; end
+
+  def edit; end
+
+  def update
+    if @note.update(note_params)
+      flash[:notice] = 'Your note has been updated.'
+      redirect_to [@product, @note]
+    else
+      flash.now[:alert] = 'Your note has not been updated.'
+      render 'edit'
+    end
+  end
 
   private
 

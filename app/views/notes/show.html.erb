@@ -1,10 +1,14 @@
-<div class="note">
+<div class='note'>
   <header>
     <h1><%= @product.name %></h1>
   </header>
 
   <header>
     <h2><%= @note.name %></h2>
+
+    <ul class='actions'>
+      <li><%= link_to 'Edit Note', [:edit, @product, @note] %></li>
+    </ul>
   </header>
 
   <%= simple_format(@note.description) %>
