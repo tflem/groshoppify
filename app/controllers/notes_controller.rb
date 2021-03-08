@@ -2,7 +2,7 @@
 
 class NotesController < ApplicationController
   before_action :set_product
-  before_action :set_note, only: %i[show edit update]
+  before_action :set_note, only: %i[show edit update destroy]
 
   def new
     @note = @product.notes.build
@@ -32,6 +32,13 @@ class NotesController < ApplicationController
       flash.now[:alert] = 'Your note has not been updated.'
       render 'edit'
     end
+  end
+
+  def destroy
+    @note.destroy
+
+    flash[:notice] = 'Your note has been deleted.'
+    redirect_to @product
   end
 
   private

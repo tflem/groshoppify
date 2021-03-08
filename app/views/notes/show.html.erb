@@ -8,6 +8,12 @@
 
     <ul class='actions'>
       <li><%= link_to 'Edit Note', [:edit, @product, @note] %></li>
+      <li>
+        <%= link_to 'Delete Note',
+            [@product, @note],
+            method: :delete, data: { confirm: "You really want to delete this note?" }
+        %>          
+      </li>
     </ul>
   </header>
 
