@@ -1,10 +1,37 @@
-<h1>Products</h1>
+<div class='pb-2 mt-4 mb-2 border-bottom'>
+  <h1>Products</h1>
 
-<%= link_to 'New Product', new_product_path %>
+  <div class='row'>
+    <div class='col-md-12'>
+      <table class="table table-dark">        
+        <thead class='thead-dark'>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+            <th>Created At</th>
+          </tr>
 
-<div id='products'>
-  <% @products.each do |product| %>
-    <h2><%= link_to product.name, product %></h2>    
-    <p><%= product.quantity %></p>
-  <% end %>
+        <% @products.each do |product| %>
+          <tr>
+            <td>
+              <%= link_to product.name.titleize, product %>
+            </td>
+            <td>
+              <%= product.quantity %>
+            </td>
+            <td>                                   
+            </td>      
+            <td>
+              <%= product.created_at %>
+            </td>             
+          </tr>          
+        <% end %>
+        </thead>
+      </table>    
+    </div>  
+
+  <ul class='actions'>  	
+    <li><%= link_to "New Product", new_product_path, class: "new" %></li>
+  </ul>
 </div>

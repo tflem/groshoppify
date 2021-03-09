@@ -1,0 +1,74 @@
+@import "bootstrap";
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/regular';
+@import '@fortawesome/fontawesome-free/scss/brands';
+@import '@fortawesome/fontawesome-free/scss/v4-shims';
+
+$primary: #0074d9;
+$danger: #ff4136;
+
+header {
+  @extend .pb-2, .mt-4, .mb-2, .border-bottom, .row;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @extend .col-sm-12, .col-md-6;
+  }
+
+  ul.actions {
+    @extend .col-sm-12, .col-md-6;
+    @extend .list-unstyled, .list-inline;
+
+    li {
+      @extend .list-inline-item;
+    }
+
+    text-align: right;
+  }
+}
+
+a.new,
+a.edit,
+a.delete {
+  @extend .btn;
+
+  &:before {
+    font-family: "Font Awesome 5 Free";
+    padding-right: 0.5em;
+  }
+}
+
+a.new {
+  @extend .btn-success;
+
+  &:before {
+    @extend .fa-plus-square;
+  }
+}
+
+a.edit {
+  @extend .btn-primary;
+
+  &:before {
+    @extend .fa-edit;
+  }
+}
+
+a.delete {
+  @extend .btn-danger;
+
+  &:before {
+    @extend .fa-trash-alt;
+  }
+}
+
+
+
+
+
