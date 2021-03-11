@@ -1,26 +1,8 @@
-<%= form_with(model: product, local: true) do |form| %>
-  <% if product.errors.any? %>
-  <div id='error_info'>
-    <h2><%= pluralize(product.errors.count, 'error') %>
-    kept this product from being saved:</h2>
-
-    <ul>
-      <% product.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-  <% end %>
-  <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div>
-    <%= form.label :quantity %>
-    <%= form.text_field :quantity %>
-  </div>  
-
-  <%= form.submit %>
+<%= bootstrap_form_with(model: product, local: true, label_errors: true) do |form| %>  
+  
+  <%= form.text_field :name, class: 'mb-2', placeholder: 'Enter the product name' %>
+  <%= form.text_field :quantity, placeholder: 'Enter the product quantity' %>
+  
+  <%= form.submit class: 'mt-4 mb-4 btn btn-dark' %>
 <% end %>
 

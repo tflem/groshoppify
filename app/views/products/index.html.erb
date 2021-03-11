@@ -31,7 +31,7 @@
               </div>                   
             </td>      
             <td class='text-center'>
-              <%= time_ago_in_words product.created_at + " ago" %>
+              <%= time_ago_in_words(product.created_at) + " ago" %>
             </td>             
           </tr>          
         <% end %>

@@ -33,14 +33,6 @@ header {
   }
 }
 
-footer {
-	a {
-		color: #212529;
-		text-decoration: none;
-	}
-	.fa-heart { color: #AA0000; }
-}
-
 a.new,
 a.edit,
 a.delete {
@@ -82,4 +74,23 @@ a.delete {
 
 .alert-alert {
   @extend .alert-dark;
+}
+
+footer {
+	a {
+		color: #212529;
+		text-decoration: none;
+	}
+	.fa-heart { color: #AA0000; }
+}
+
+.rails-bootstrap-forms-date-select select,
+.rails-bootstrap-forms-time-select select,
+.rails-bootstrap-forms-datetime-select select {
+  display: inline-block;
+  width: auto;
+}
+
+.rails-bootstrap-forms-error-summary {
+  margin-top: 10px;
 }

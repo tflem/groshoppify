@@ -14,6 +14,7 @@ gem 'rspec_junit_formatter'
 gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 5.2.1'
+gem 'bootstrap_form', '~> 4.5'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

@@ -22,4 +22,4 @@ require('stylesheets/application.scss')
 
 import 'bootstrap/dist/js/bootstrap'
 import 'bootstrap/dist/css/bootstrap'
-import "@fortawesome/fontawesome-free/js/all";
+import '@fortawesome/fontawesome-free/js/all'
