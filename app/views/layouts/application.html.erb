@@ -12,15 +12,20 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= favicon_link_tag 'icons8-grocery-bag-48' %>    
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>    
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
   </head>
 
   <body>
-    <div class="container-fluid">
+    <div class='container-fluid'>
       <% flash.each do |key, message| %>
-        <div><%= message %></div>
+        <div class='alert alert-<%= key %>'>
+          <%= message %>            
+        </div>
       <% end %>
       <%= yield %>
+      <%= render 'layouts/footer' %>
     </div>
   </body>
 </html>

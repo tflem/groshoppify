@@ -6,8 +6,8 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '@fortawesome/fontawesome-free/scss/brands';
 @import '@fortawesome/fontawesome-free/scss/v4-shims';
 
-$primary: #0074d9;
-$danger: #ff4136;
+$primary: #0074D9;
+$danger: #FF4136;
 
 header {
   @extend .pb-2, .mt-4, .mb-2, .border-bottom, .row;
@@ -31,6 +31,14 @@ header {
 
     text-align: right;
   }
+}
+
+footer {
+	a {
+		color: #212529;
+		text-decoration: none;
+	}
+	.fa-heart { color: #AA0000; }
 }
 
 a.new,
@@ -68,7 +76,10 @@ a.delete {
   }
 }
 
+.alert-notice {
+  @extend .alert-secondary;
+}
 
-
-
-
+.alert-alert {
+  @extend .alert-dark;
+}
