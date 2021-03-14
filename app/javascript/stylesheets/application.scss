@@ -53,7 +53,7 @@ a.new {
 }
 
 a.edit {
-  @extend .btn-outline-dark;
+  @extend .btn-dark;
 
   &:before {
     @extend .fa-edit;
@@ -61,7 +61,7 @@ a.edit {
 }
 
 a.delete {
-  @extend .btn-outline-dark;
+  @extend .btn-dark;
 
   &:before {
     @extend .fa-trash-alt;
@@ -76,10 +76,11 @@ a.delete {
   @extend .alert-dark;
 }
 
-footer {
-	a {
-		color: #212529;
-		text-decoration: none;
+.navbar.fixed-bottom {
+	.navbar-brand {
+    font-size: 0.85em;
+    margin: auto;
+    padding: 0;       
 	}
 	.fa-heart { color: #AA0000; }
 }
