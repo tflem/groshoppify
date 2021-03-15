@@ -1,7 +1,12 @@
-<%= bootstrap_form_with(model: [product, note], local: true, label_errors: true) do |form| %>
-  
-  <%= form.text_field :name, class: 'mb-2', placeholder: 'Enter a note name' %>   
-  <%= form.text_area :description, placeholder: 'Enter a note description' %>
+<div class='row justify-content-center'>
+  <div class='col-lg-6 col-md-8 col-sm-10'>
 
-  <%= form.submit class: 'mt-4 mb-4 btn btn-dark' %>
-<% end %>
+  <%= bootstrap_form_with(model: [product, note], local: true, label_errors: true) do |form| %>
+  
+    <%= form.text_field :name, class: 'mb-2', placeholder: 'Example: Egg Size' %>   
+    <%= form.text_area :description, placeholder: 'Example: Pickup two cartons of large eggs' %>
+
+    <%= form.submit class: 'mt-4 mb-4 btn btn-dark' %>
+  <% end %>
+  </div>
+</div>

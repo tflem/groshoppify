@@ -10,7 +10,7 @@ $primary: #0074D9;
 $danger: #FF4136;
 
 header {
-  @extend .pb-2, .mt-4, .mb-2, .border-bottom, .row;
+  @extend .pb-2, .mt-4, .mb-2, .border-bottom, .row, .justify-content-center;
 
   h1,
   h2,
@@ -76,7 +76,11 @@ a.delete {
   @extend .alert-dark;
 }
 
-.navbar.fixed-bottom {
+.navbar.fixed-bottom {  
+  a {
+    text-decoration-line: none;
+    color: #FFFFFF;
+  }
 	.navbar-brand {
     font-size: 0.85em;
     margin: auto;
