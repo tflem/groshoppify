@@ -27,11 +27,9 @@
 
 <header>
   <ul class='notes'>
-    <% @product.notes.each do |note| %>
-      <li>
+    <% @product.notes.each do |note| %>      
         #<%= note.id %> -
-        <%= link_to note.name, [@product, note] %>
-      </li>
+        <%= link_to note.name, [@product, note] %>      
       <% end %>
   </ul>
 </header>
