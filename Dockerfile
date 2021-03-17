@@ -54,7 +54,7 @@ RUN bundle install
 # Copy over all files
 COPY --chown=1000:1000 . .
 
-RUN yarn install --check-files
+RUN yarn install --prefer-offline --frozen-lockfile
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 
