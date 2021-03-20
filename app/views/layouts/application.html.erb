@@ -26,21 +26,36 @@
     </button>
     <div class='collapse navbar-collapse' id='navbarNavDropdown'>
       <ul class='navbar-nav'>
+        <% if user_signed_in? %>
+          <div class="navbar-right">
+            <p class="navbar-text">
+              Logged in as <%= current_user.email %>
+            </p>
+          </div>
+        <% end %>        
         <li class='nav-item'>
           <%= link_to 'Home', root_path, class: 'nav-link' %>
         </li>
-        <li class='<%= 'active' if current_page?('/users/sign_up') %>'>
-          <%= link_to 'Sign Up', new_user_registration_path %>
-        </li>
-        <li class='nav-item'>
-          <a class='nav-link' href='#'>Login</a>          
-        </li>        
+        <% unless user_signed_in? %>
+          <li class='<%= 'active' if current_page?('/users/sign_up') %>'>
+            <%= link_to 'Sign Up', new_user_registration_path %>
+          </li>
+          <li class='<%= 'active' if current_page?('/users/sign_in') %>'>
+            <%= link_to 'Login', new_user_session_path, class: 'nav-link' %>          
+          </li>        
+        <% end %>
         <li class='nav-item dropdown'>
           <a class='nav-link dropdown-toggle' href="#" id='navbarDropdownMenuLink' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
             Account
           </a>
           <ul class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-            <li><a class='dropdown-item' href='#'>Logout</a></li>
+            <% if user_signed_in? %>
+              <div class='navbar-text'>
+                Signed in as <%= current_user.email %> &middot;
+              </div>
+              <%= link_to 'Logout', destroy_user_session_path, method: :delete,
+                  class: 'btn btn-outline-danger ml-1' %>
+            <% end %>
             <li><a class="dropdown-item" href='#'>Edit Registration</a></li>             
           </ul>
         </li>
