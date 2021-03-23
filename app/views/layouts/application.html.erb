@@ -26,44 +26,32 @@
     </button>
     <div class='collapse navbar-collapse' id='navbarNavDropdown'>
       <ul class='navbar-nav'>
-        <% if user_signed_in? %>
-          <div class="navbar-right">
-            <p class="navbar-text">
-              Logged in as <%= current_user.email %>
-            </p>
-          </div>
-        <% end %>        
-        <li class='nav-item'>
-          <%= link_to 'Home', root_path, class: 'nav-link' %>
-        </li>
         <% unless user_signed_in? %>
           <li class='<%= 'active' if current_page?('/users/sign_up') %>'>
-            <%= link_to 'Sign Up', new_user_registration_path %>
+            <%= link_to 'Sign Up', new_user_registration_path, class: 'nav-link' %>
           </li>
           <li class='<%= 'active' if current_page?('/users/sign_in') %>'>
             <%= link_to 'Login', new_user_session_path, class: 'nav-link' %>          
           </li>        
-        <% end %>
+        <% end %>    
+        <% if user_signed_in? %>   
+          <div class='navbar-text'>            
+              Logged in as <%= current_user.email %>            
+          </div> 
         <li class='nav-item dropdown'>
-          <a class='nav-link dropdown-toggle' href="#" id='navbarDropdownMenuLink' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
-            Account
+          <a class='nav-link dropdown-toggle' href="#" id='navbarDropdownMenuLink' role='button' data-bs-toggle='dropdown' aria-expanded='false'>            
           </a>
-          <ul class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-            <% if user_signed_in? %>
-              <div class='navbar-text'>
-                Signed in as <%= current_user.email %> &middot;
-              </div>
+          <ul class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>              
               <%= link_to 'Logout', destroy_user_session_path, method: :delete,
-                  class: 'btn btn-outline-danger ml-1' %>
-            <% end %>
-            <li><a class="dropdown-item" href='#'>Edit Registration</a></li>             
+                  class: 'dropdown-item' %>
+              <%= link_to 'Edit Registration', edit_user_registration_path, class: 'dropdown-item' %>
+            <% end %>                        
           </ul>
         </li>
       </ul>
     </div>
-  </div>
+  </div>  
 </nav>
-
   <body>
     <div class='container-fluid'>
       <% flash.each do |key, message| %>

@@ -10,7 +10,7 @@ RSpec.feature "Our logged-in users can log out" do
 
   it do
     visit "/"
-    click_link "Account"
+    #click_link "Account"
     click_link "Logout"
     expect(page).to have_content "You Have Logged Out Successfully."
   end

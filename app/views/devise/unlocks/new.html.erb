@@ -1,16 +1,17 @@
-<h2>Resend unlock instructions</h2>
+<header class='justify-content-center'>
+  <h1>Resend Unlock Instructions</h1>
+</header>
 
-<%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<div class='row justify-content-center'>
+  <div class='col-lg-6 col-md-8 col-sm-10'>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <%= bootstrap_form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>  
+    
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>  
+      <%= f.submit "Resend Unlock Instructions", class: 'mt-4 mb-4 btn btn-dark' %>  
+  <% end %>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Resend unlock instructions" %>
-  </div>
-<% end %>
+</div>
 
 <%= render "devise/shared/links" %>

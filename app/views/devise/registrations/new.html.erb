@@ -1,29 +1,21 @@
-<h2>Sign up</h2>
+<header class='justify-content-center'>
+  <h1>Sign Up</h1>
+</header>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<div class='row justify-content-center'>
+   <div class='col-lg-6 col-md-8 col-sm-10'>
+  <%= bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render 'devise/shared/error_messages', resource: resource %>
+  
+      <%= f.email_field :email, autofocus: true, autocomplete: 'email' %>     
+      <%= f.password_field :password %>
+    
+      <%= f.password_field :password_confirmation, label: 'Password Confirmation' %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+
+      <%= f.submit 'Sign Up', class: 'mt-4 mb-4 btn btn-dark' %>
+  <% end %>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation, label: 'Password Confirmation' %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign Up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+<%= render 'devise/shared/links' %>
