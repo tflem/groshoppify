@@ -1,14 +1,14 @@
-<header class='justify-content-center'>
+<header class="justify-content-center">
   <h1>Forgot Your Password?</h1>
 </header>
 
-<div class='row justify-content-center'>
-  <div class='col-lg-6 col-md-8 col-sm-10'>
+<div class="row justify-content-center">
+  <div class="col-lg-6 col-md-8 col-sm-10">
     <%= bootstrap_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>  
     
         <%= f.email_field :email, autofocus: true, autocomplete: "email" %>  
-        <%= f.submit "Send Password Reset Instructions", class: 'mt-4 mb-4 btn btn-dark' %>  
+        <%= f.submit "Send Password Reset Instructions", class: "mt-4 mb-4 btn btn-dark" %>  
     <% end %>
   </div>
 </div>

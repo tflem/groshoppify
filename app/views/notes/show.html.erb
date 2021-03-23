@@ -1,4 +1,4 @@
-<div class='note'>
+<div class="note">
   <header>
     <h1><%= @product.name %></h1>
   </header>
@@ -6,17 +6,30 @@
   <header>
     <h2><%= @note.name %></h2>
 
-    <ul class='actions'>
-      <li><%= link_to 'Edit Note', [:edit, @product, @note], class: 'edit' %></li>
+    <ul class="actions">
+      <li><%= link_to "Edit Note", [:edit, @product, @note], class: "edit" %></li>
       <li>
-        <%= link_to 'Delete Note',
+        <%= link_to "Delete Note",
             [@product, @note],
-            class: 'delete',
+            class: "delete",
             method: :delete, data: { confirm: "You really want to delete this note?" }
         %>          
       </li>
     </ul>
   </header>
+
+<table class="attributes">
+  <tr>
+    <th>Author:</th>
+      <td><%= @note.author.email %></td>
+    </tr>
+    <tr>
+      <th>Created:</th>
+      <td><%= time_ago_in_words(@note.created_at) %> ago</td>
+  </tr>
+</table>
+
+<hr>
 
   <%= simple_format(@note.description) %>
 </div>

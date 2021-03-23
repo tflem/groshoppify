@@ -10,13 +10,14 @@ class NotesController < ApplicationController
 
   def create
     @note = @product.notes.build(note_params)
+    @note.author = current_user
 
     if @note.save
-      flash[:notice] = 'Your note has been created.'
+      flash[:notice] = "Your note has been created."
       redirect_to [@product, @note]
     else
-      flash.now[:alert] = 'Your note has not been created.'
-      render 'new'
+      flash.now[:alert] = "Your note has not been created."
+      render "new"
     end
   end
 
@@ -26,18 +27,18 @@ class NotesController < ApplicationController
 
   def update
     if @note.update(note_params)
-      flash[:notice] = 'Your note has been updated.'
+      flash[:notice] = "Your note has been updated."
       redirect_to [@product, @note]
     else
-      flash.now[:alert] = 'Your note has not been updated.'
-      render 'edit'
+      flash.now[:alert] = "Your note has not been updated."
+      render "edit"
     end
   end
 
   def destroy
     @note.destroy
 
-    flash[:notice] = 'Your note has been deleted.'
+    flash[:notice] = "Your note has been deleted."
     redirect_to @product
   end
 

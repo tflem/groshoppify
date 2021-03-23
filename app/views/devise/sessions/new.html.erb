@@ -1,9 +1,9 @@
-<header class='justify-content-center'>
+<header class="justify-content-center">
   <h1>Log In</h1>
 </header>
 
-<div class='row justify-content-center'>
-   <div class='col-lg-6 col-md-8 col-sm-10'>
+<div class="row justify-content-center">
+   <div class="col-lg-6 col-md-8 col-sm-10">
      <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %> 
         <%= f.email_field :email, autofocus: true, autocomplete: "email" %>        
         <%= f.password_field :password, autocomplete: "current-password" %>
@@ -11,7 +11,7 @@
        <% if devise_mapping.rememberable? %>    
          <%= f.check_box :remember_me %>             
        <% end %>
-       <%= f.submit "Log In", class: 'mt-4 mb-4 btn btn-dark' %>  
+       <%= f.submit "Log In", class: "mt-4 mb-4 btn btn-dark" %>  
     <% end %>
   </div>
 </div>

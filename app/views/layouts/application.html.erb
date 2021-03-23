@@ -11,40 +11,40 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %> 
-    <%= favicon_pack_tag 'icons8-grocery-store-96.png' %>    
+    <%= stylesheet_pack_tag "application", media: "all", "data-turbolinks-track": "reload" %>
+    <%= javascript_pack_tag "application", "data-turbolinks-track": "reload" %> 
+    <%= favicon_pack_tag "icons8-grocery-store-96.png" %>    
           
-    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   </head>
 
-  <nav class='navbar navbar-expand-lg navbar-dark bg-dark'>
-  <div class='container-fluid'>    
-    <%= link_to 'Groshoppify', root_path, class: 'navbar-brand' %>
-    <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation'>
-      <span class='navbar-toggler-icon'></span>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">    
+    <%= link_to "Groshoppify", root_path, class: "navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
-    <div class='collapse navbar-collapse' id='navbarNavDropdown'>
-      <ul class='navbar-nav'>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
         <% unless user_signed_in? %>
-          <li class='<%= 'active' if current_page?('/users/sign_up') %>'>
-            <%= link_to 'Sign Up', new_user_registration_path, class: 'nav-link' %>
+          <li class="<%= "active" if current_page?("/users/sign_up") %>">
+            <%= link_to "Sign Up", new_user_registration_path, class: "nav-link" %>
           </li>
-          <li class='<%= 'active' if current_page?('/users/sign_in') %>'>
-            <%= link_to 'Login', new_user_session_path, class: 'nav-link' %>          
+          <li class="<%= "active" if current_page?("/users/sign_in") %>">
+            <%= link_to "Login", new_user_session_path, class: "nav-link" %>          
           </li>        
         <% end %>    
         <% if user_signed_in? %>   
-          <div class='navbar-text'>            
+          <div class="navbar-text">            
               Logged in as <%= current_user.email %>            
           </div> 
-        <li class='nav-item dropdown'>
-          <a class='nav-link dropdown-toggle' href="#" id='navbarDropdownMenuLink' role='button' data-bs-toggle='dropdown' aria-expanded='false'>            
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">            
           </a>
-          <ul class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>              
-              <%= link_to 'Logout', destroy_user_session_path, method: :delete,
-                  class: 'dropdown-item' %>
-              <%= link_to 'Edit Registration', edit_user_registration_path, class: 'dropdown-item' %>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">              
+              <%= link_to "Logout", destroy_user_session_path, method: :delete,
+                  class: "dropdown-item" %>
+              <%= link_to "Edit Registration", edit_user_registration_path, class: "dropdown-item" %>
             <% end %>                        
           </ul>
         </li>
@@ -53,14 +53,14 @@
   </div>  
 </nav>
   <body>
-    <div class='container-fluid'>
+    <div class="container-fluid">
       <% flash.each do |key, message| %>
-        <div class='alert alert-<%= key %>'>
+        <div class="alert alert-<%= key %>">
           <%= message %>            
         </div>
       <% end %>
       <%= yield %>
-      <%= render 'layouts/footer' %>
+      <%= render "layouts/footer" %>
     </div>
   </body>
 </html>
