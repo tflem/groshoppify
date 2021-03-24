@@ -20,11 +20,11 @@
 
 <table class="attributes">
   <tr>
-    <th>Author:</th>
+    <th>Note Author:</th>
       <td><%= @note.author.email %></td>
     </tr>
     <tr>
-      <th>Created:</th>
+      <th>Note Created:</th>
       <td><%= time_ago_in_words(@note.created_at) %> ago</td>
   </tr>
 </table>
