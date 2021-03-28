@@ -91,5 +91,14 @@ a.delete {
 }
 
 .rails-bootstrap-forms-error-summary {
-  margin-top: 10px;
+  margin-top: 0.63em;
+}
+
+#admin .col-md-3 h2 {
+  font-size: 0.81em;
+  letter-spacing: 0.63em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #959595;
+  padding-left: 0.94em;
 }
