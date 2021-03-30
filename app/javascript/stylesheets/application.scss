@@ -34,12 +34,13 @@ a.delete {
 
   &:before {
     font-family: "Font Awesome 5 Free";
-    padding-right: 0.5em;
+    padding-right: 0.5em;    
   }
 }
 
 a.new {
   @extend .btn-dark;
+  margin-bottom: 0.6em;
 
   &:before {
     @extend .fa-plus-square;
