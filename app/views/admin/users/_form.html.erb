@@ -1,0 +1,10 @@
+<div class="row justify-content-center">
+	<div class="col-lg-6">
+  <%= bootstrap_form_with(model: [:admin, user], local: true, label_errors: true) do |form| %>
+    <%= form.text_field :email, class: "mb-2", placeholder: "Example: user@example.com" %>
+      <%= form.text_field :password, placeholder: "Example: password" %>
+
+    <%= form.submit class: "mt-4 mb-4 btn btn-dark" %>
+  <% end %>
+  </div>
+</div>

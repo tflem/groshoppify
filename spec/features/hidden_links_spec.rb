@@ -11,7 +11,7 @@ RSpec.describe "Our users can only see appropriate links" do
       expect(page).not_to have_link "New Product"
     end
 
-    it "cannot see tge Delete Product link" do
+    it "cannot see the Delete Product link" do
       visit product_path(product)
       expect(page).not_to have_link "Delete Product"      
     end

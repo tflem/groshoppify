@@ -1,0 +1,8 @@
+<h1>LandingPage#home</h1>
+<p>Find me in app/views/landing_page/home.html.erb</p>
+
+<% admins_only do %>
+  <%= link_to "New Product", new_admin_product_path, class: "new" %>
+<% end %>
+
+<%= link_to "View Products", products_path, class: "new" %>

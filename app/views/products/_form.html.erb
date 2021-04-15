@@ -1,12 +1,12 @@
-<div class='row justify-content-center'>
-	<div class='col-lg-6'>
+<div class="row justify-content-center">
+	<div class="col-lg-6">
 
     <%= bootstrap_form_with(model: product, local: true, label_errors: true) do |form| %>  
   
-      <%= form.text_field :name, class: 'mb-2', placeholder: 'Example: Eggs' %>
-      <%= form.text_field :quantity, placeholder: 'Example: 2' %>
+      <%= form.text_field :name, class: "mb-2", placeholder: "Example: Eggs" %>
+      <%= form.text_field :quantity, placeholder: "Example: 2" %>
   
-      <%= form.submit class: 'mt-4 mb-4 btn btn-dark' %>
+      <%= form.submit class: "mt-4 mb-4 btn btn-dark" %>
   
     <% end %>
   </div>
