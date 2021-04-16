@@ -17,4 +17,13 @@ RSpec.describe "Our admins can create new users" do
 		click_button "Create User"
 		expect(page).to have_content "A new user has been created."		
 	end  
+
+	it "when a new user is an admin" do
+		fill_in "Email", with: "admin@example.com"
+		fill_in "Password", with: "userpassword"
+		check "Admin?"
+		click_button "Create User"
+		expect(page).to have_content "A new user has been created."
+		expect(page).to have_content "admin@example.com (Admin)"		
+	end
 end
